@@ -7,7 +7,10 @@
 // You can delete this file if you're not using it
 
 const fetch = require('node-fetch');
+const { resolve } = require('path');
 const base_url = "http://jorgelbou-saad.com/testwordpress/wp-json"; 
+
+const path = require("path");
 
 
 exports.sourceNodes = async ({
@@ -58,38 +61,57 @@ exports.sourceNodes = async ({
           },
       });
 
-
     }
-
-    /*resultData.forEach(element => {
-
-      let autorData;
-
-      let url = element._links.author[0].href;
-      console.log("probando url ",url);
-      
-      //SE ADQUIERE EL AUTOR
-      fetch(url)
-       .then(res => res.json())
-       .then(json => {
-
-        autorData = json;
-        createNode({
-          id: "post-"+ element.id,
-          slug: element.slug,
-          date: element.date,
-          date_updated: element.modified,
-          status: element.status,
-          title: element.title.rendered,
-          content: element.content.rendered,
-          autor: autorData,
-          internal: {
-            type: `Wordpress`,
-            contentDigest: createContentDigest(resultData),
-          },
-        });
-       });
-
-  
-    }); */
   }
+
+  exports.createPages = ({graphql, actions }) => {
+
+    const {createPage} = actions;
+    return graphql(`
+        {
+          allWordpress(sort: {fields: [date]}) {
+                  edges {
+                        node {
+                              id
+                              title
+                              date
+                              date_updated
+                              slug
+                              status
+                              media {
+                                  id
+                                  guid {
+                                      rendered
+                                  }
+                              }
+                              content
+                              author {
+                                id
+                                name
+                              }
+                          } 
+                    }
+          }
+        }`).then((result) => {
+          
+            result.data.allWordpress.edges.forEach(element => {
+                
+                createPage({
+                  path: element.node.slug,
+                  component: path.resolve("./src/templates/blog-post.js"),
+                  context: {
+                    slug: element.node.slug,
+                    title: element.node.title,
+                    date: element.node.date,
+                    date_updated: element.node.date_updated,
+                    status: element.node.status,
+                    author: element.node.author,
+                    media: element.node.media
+                  }
+                })
+            });
+        });
+
+      
+  }
+
