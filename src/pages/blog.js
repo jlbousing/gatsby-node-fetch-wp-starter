@@ -5,6 +5,7 @@ import { graphql } from "gatsby";
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
+import Blog from "../components/blog"
 
 const BlogPage = ({data}) => {
 
@@ -13,10 +14,11 @@ const BlogPage = ({data}) => {
         <Layout>
           <SEO title="Blog" />
           <h1>Test blog</h1>
-          
           <p>
             <Link to="/">Go to index page</Link> <br />
           </p>
+          
+          <Blog data={data}></Blog>
         </Layout>
       )
 }
@@ -33,15 +35,30 @@ export const query = graphql`
 ` */
 
 export const query = graphql`
-    query WordpreessPost {
-        wordpress{
-		    id
-            title
-            slug
-            date
-            date_updated
-            content
+ query WordpressData {
+  allWordpress {
+    edges {
+      node {
+        id
+        title
+        date
+        date_updated
+        slug
+        status
+        media {
+          id
+          guid {
+            rendered
+          }
         }
+        content
+        author {
+          id
+          name
+        }
+      }
+    }
+  }
 }
 `
 
