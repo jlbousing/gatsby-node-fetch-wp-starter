@@ -1,6 +1,7 @@
 import React from "react"
 import Layout from "../components/layout"
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
+
 
 export default ({ data }) => {
   const post = data.allWordpress.edges[0].node
@@ -13,6 +14,8 @@ export default ({ data }) => {
         <p> By: {post.author.name} </p>
         <p> On: {post.date} </p>
       </div>
+      <br></br>
+      <Link to="/blog/">Volver al inicio del blog</Link>
     </Layout>
   )
 }
