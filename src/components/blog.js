@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from "styled-components";
+import ReactHtmlParser from "react-html-parser";
 
 const BlogContainer = styled.div`
     display: flex;
@@ -11,6 +12,8 @@ const BlogContainer = styled.div`
 const ThumbsBlog = styled.div`
     width: 25%;
     color: #000;
+    border: 2px solid #000;
+    margin-left: 10px;
 `;
 
 const Blog = (props) => {
@@ -21,26 +24,19 @@ const Blog = (props) => {
         <div>
             <BlogContainer>
 
-                {/*<ThumbsBlog>
-         
-                        <img src={data.allWordpress.edges[1].node.media.guid.rendered}
-                            style={{width: "250px", height: "250px"}}/>
-                        <span>Title: </span> <h1>{data.allWordpress.edges[1].node.title}</h1>
-                        <span>Author:</span> <h1>{data.allWordpress.edges[1].node.author.name}</h1>
-                        <p>{data.allWordpress.edges[1].node.content}</p>
-                </ThumbsBlog> */}
-
                 {data.allWordpress.edges.map((node, index) => {
                     return (
                         <ThumbsBlog key={index}>
-                        <h1>test</h1>
                         {node.node.media !== null ? (
                             <img src={node.node.media.guid.rendered}
                             style={{width: "250px", height: "250px"}}/>
-                        ): null}
-                        <span>Title: </span> <h1>{node.node.title}</h1>
-                        <span>Author:</span> <h1>{node.node.author.name}</h1>
-                        <p>{node.node.content}</p>
+                        ): (
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/WordPress.svg/1024px-WordPress.svg.png"
+                            style={{width: "250px", height: "250px"}}/>
+                        )}
+                        <span>Title: </span> <h3>{node.node.title}</h3>
+                        <span>Author:</span> <span>{node.node.author.name}</span>
+                        <p>{ReactHtmlParser(node.node.content)}</p>
                         
                     </ThumbsBlog>
                     );
