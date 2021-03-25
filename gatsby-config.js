@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
+    title: `Gatsby Node-Fetch Wordpress Boilerplate`,
     description: `Test wordpress with fetch-node`,
-    author: `@gatsbyjs`,
+    author: `@jlbousing`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
