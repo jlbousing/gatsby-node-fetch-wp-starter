@@ -1,4 +1,5 @@
 module.exports = {
+  pathPrefix: "/demo-gatsby-node-fetch-wp-starter",
   siteMetadata: {
     title: `Gatsby Node-Fetch Wordpress Boilerplate`,
     description: `Test wordpress with fetch-node`,
